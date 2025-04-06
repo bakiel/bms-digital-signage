@@ -1,0 +1,11 @@
+{
+  "name": "supabase-bms-digital-signage",
+  "type": "supabase",
+  "projectUrl": "https://rwsjbkedgztplwzxoxks.supabase.co",
+  "anonKey": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InJ3c2pia2VkZ3p0cGx3enhveGtzIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDM2Njg1MzAsImV4cCI6MjA1OTI0NDUzMH0.cfd5F50Yu3Kmu-ipJzPjHWeLe6bcmk4MzXCw91PI_Jg",
+  "serviceRoleKey": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InJ3c2pia2VkZ3p0cGx3enhveGtzIiwicm9sZSI6InNlcnZpY2Vfcm9sZSIsImlhdCI6MTc0MzY2ODUzMCwiZXhwIjoyMDU5MjQ0NTMwfQ.-GlVk5BWIhkAtRXY4WJdbz7qp_6f4MFKe3iFZ09SNKI",
+  "buckets": ["branding", "products", "uniforms", "ui-elements"],
+  "tables": ["products", "categories", "announcements", "product_prices", "settings"],
+  "defaultBucket": "products",
+  "defaultSchema": "public"
+}

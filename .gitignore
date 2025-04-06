@@ -1,0 +1,8 @@
+# macOS
+.DS_Store
+
+# Roo directory
+.roo/
+
+# Old client code
+client_old/

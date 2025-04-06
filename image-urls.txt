@@ -1,0 +1,144 @@
+{
+  "branding": [],
+  "products": [
+    {
+      "name": "back-to-school-sale.png",
+      "publicUrl": "https://rwsjbkedgztplwzxoxks.supabase.co/storage/v1/object/public/products/back-to-school-sale.png",
+      "databaseReference": "products/back-to-school-sale.png"
+    },
+    {
+      "name": "calculator-casio-fx-82ms-sc3-dh-scientific.png",
+      "publicUrl": "https://rwsjbkedgztplwzxoxks.supabase.co/storage/v1/object/public/products/calculator-casio-fx-82ms-sc3-dh-scientific.png",
+      "databaseReference": "products/calculator-casio-fx-82ms-sc3-dh-scientific.png"
+    },
+    {
+      "name": "clear-plastic-sheet-protectors.png",
+      "publicUrl": "https://rwsjbkedgztplwzxoxks.supabase.co/storage/v1/object/public/products/clear-plastic-sheet-protectors.png",
+      "databaseReference": "products/clear-plastic-sheet-protectors.png"
+    },
+    {
+      "name": "colorful-plastic-folders-labeled.png",
+      "publicUrl": "https://rwsjbkedgztplwzxoxks.supabase.co/storage/v1/object/public/products/colorful-plastic-folders-labeled.png",
+      "databaseReference": "products/colorful-plastic-folders-labeled.png"
+    },
+    {
+      "name": "crayons-coloured-24s-staedtler.png",
+      "publicUrl": "https://rwsjbkedgztplwzxoxks.supabase.co/storage/v1/object/public/products/crayons-coloured-24s-staedtler.png",
+      "databaseReference": "products/crayons-coloured-24s-staedtler.png"
+    },
+    {
+      "name": "desktop-casio.png",
+      "publicUrl": "https://rwsjbkedgztplwzxoxks.supabase.co/storage/v1/object/public/products/desktop-casio.png",
+      "databaseReference": "products/desktop-casio.png"
+    },
+    {
+      "name": "duracell-aaa-batteries-pack.png",
+      "publicUrl": "https://rwsjbkedgztplwzxoxks.supabase.co/storage/v1/object/public/products/duracell-aaa-batteries-pack.png",
+      "databaseReference": "products/duracell-aaa-batteries-pack.png"
+    },
+    {
+      "name": "duracell-cr2016-battery-pack.png",
+      "publicUrl": "https://rwsjbkedgztplwzxoxks.supabase.co/storage/v1/object/public/products/duracell-cr2016-battery-pack.png",
+      "databaseReference": "products/duracell-cr2016-battery-pack.png"
+    },
+    {
+      "name": "duracell-dl-cr2016-batteries-pack.png",
+      "publicUrl": "https://rwsjbkedgztplwzxoxks.supabase.co/storage/v1/object/public/products/duracell-dl-cr2016-batteries-pack.png",
+      "databaseReference": "products/duracell-dl-cr2016-batteries-pack.png"
+    },
+    {
+      "name": "exam-2.png",
+      "publicUrl": "https://rwsjbkedgztplwzxoxks.supabase.co/storage/v1/object/public/products/exam-2.png",
+      "databaseReference": "products/exam-2.png"
+    },
+    {
+      "name": "exam-essentials.png",
+      "publicUrl": "https://rwsjbkedgztplwzxoxks.supabase.co/storage/v1/object/public/products/exam-essentials.png",
+      "databaseReference": "products/exam-essentials.png"
+    },
+    {
+      "name": "glue-stick-pritt-43g.png",
+      "publicUrl": "https://rwsjbkedgztplwzxoxks.supabase.co/storage/v1/object/public/products/glue-stick-pritt-43g.png",
+      "databaseReference": "products/glue-stick-pritt-43g.png"
+    },
+    {
+      "name": "graphite-pencils-and-packaging.png",
+      "publicUrl": "https://rwsjbkedgztplwzxoxks.supabase.co/storage/v1/object/public/products/graphite-pencils-and-packaging.png",
+      "databaseReference": "products/graphite-pencils-and-packaging.png"
+    },
+    {
+      "name": "lion-king-book-jacket-packaging.png",
+      "publicUrl": "https://rwsjbkedgztplwzxoxks.supabase.co/storage/v1/object/public/products/lion-king-book-jacket-packaging.png",
+      "databaseReference": "products/lion-king-book-jacket-packaging.png"
+    },
+    {
+      "name": "new-term-supplies-2.png",
+      "publicUrl": "https://rwsjbkedgztplwzxoxks.supabase.co/storage/v1/object/public/products/new-term-supplies-2.png",
+      "databaseReference": "products/new-term-supplies-2.png"
+    },
+    {
+      "name": "new-term-supplies.png",
+      "publicUrl": "https://rwsjbkedgztplwzxoxks.supabase.co/storage/v1/object/public/products/new-term-supplies.png",
+      "databaseReference": "products/new-term-supplies.png"
+    },
+    {
+      "name": "orange-sketchbook-with-tree-illustration.png",
+      "publicUrl": "https://rwsjbkedgztplwzxoxks.supabase.co/storage/v1/object/public/products/orange-sketchbook-with-tree-illustration.png",
+      "databaseReference": "products/orange-sketchbook-with-tree-illustration.png"
+    },
+    {
+      "name": "pen-bic-cristal-blue.png",
+      "publicUrl": "https://rwsjbkedgztplwzxoxks.supabase.co/storage/v1/object/public/products/pen-bic-cristal-blue.png",
+      "databaseReference": "products/pen-bic-cristal-blue.png"
+    },
+    {
+      "name": "three-rolls-of-white-paper.png",
+      "publicUrl": "https://rwsjbkedgztplwzxoxks.supabase.co/storage/v1/object/public/products/three-rolls-of-white-paper.png",
+      "databaseReference": "products/three-rolls-of-white-paper.png"
+    }
+  ],
+  "uniforms": [
+    {
+      "name": "black-pants-with-side-stripes.png",
+      "publicUrl": "https://rwsjbkedgztplwzxoxks.supabase.co/storage/v1/object/public/uniforms/black-pants-with-side-stripes.png",
+      "databaseReference": "uniforms/black-pants-with-side-stripes.png"
+    },
+    {
+      "name": "bucket-hat-northside-primary.png",
+      "publicUrl": "https://rwsjbkedgztplwzxoxks.supabase.co/storage/v1/object/public/uniforms/bucket-hat-northside-primary.png",
+      "databaseReference": "uniforms/bucket-hat-northside-primary.png"
+    },
+    {
+      "name": "gis-pe-shorts-blue-pipping.png",
+      "publicUrl": "https://rwsjbkedgztplwzxoxks.supabase.co/storage/v1/object/public/uniforms/gis-pe-shorts-blue-pipping.png",
+      "databaseReference": "uniforms/gis-pe-shorts-blue-pipping.png"
+    },
+    {
+      "name": "golf-shirt-gis-sky-blue.png",
+      "publicUrl": "https://rwsjbkedgztplwzxoxks.supabase.co/storage/v1/object/public/uniforms/golf-shirt-gis-sky-blue.png",
+      "databaseReference": "uniforms/golf-shirt-gis-sky-blue.png"
+    },
+    {
+      "name": "jersey-navy-white-stripes-gis-hs.png",
+      "publicUrl": "https://rwsjbkedgztplwzxoxks.supabase.co/storage/v1/object/public/uniforms/jersey-navy-white-stripes-gis-hs.png",
+      "databaseReference": "uniforms/jersey-navy-white-stripes-gis-hs.png"
+    },
+    {
+      "name": "shirt-ssleeve-gis-sky-blue.png",
+      "publicUrl": "https://rwsjbkedgztplwzxoxks.supabase.co/storage/v1/object/public/uniforms/shirt-ssleeve-gis-sky-blue.png",
+      "databaseReference": "uniforms/shirt-ssleeve-gis-sky-blue.png"
+    },
+    {
+      "name": "tunic-gis.png",
+      "publicUrl": "https://rwsjbkedgztplwzxoxks.supabase.co/storage/v1/object/public/uniforms/tunic-gis.png",
+      "databaseReference": "uniforms/tunic-gis.png"
+    }
+  ],
+  "ui-elements": [
+    {
+      "name": "placeholder.svg",
+      "publicUrl": "https://rwsjbkedgztplwzxoxks.supabase.co/storage/v1/object/public/ui-elements/placeholder.svg",
+      "databaseReference": "ui-elements/placeholder.svg"
+    }
+  ]
+}
