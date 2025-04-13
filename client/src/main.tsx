@@ -7,8 +7,8 @@ import App from './App.tsx'
 
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
-    {/* Use default basename (/) now that Vite base is relative */}
-    <BrowserRouter>
+    {/* Restore basename for GitHub Pages deployment, even with relative Vite base */}
+    <BrowserRouter basename="/bms-digital-signage/">
       <App />
     </BrowserRouter>
   </StrictMode>,
