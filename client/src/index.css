@@ -533,9 +533,10 @@ body {
   animation: imageFloat 6s ease-in-out infinite; /* Add slow float animation */
 }
 
-/* Background logo watermark for Product and Category slides */
+/* Background logo watermark for Product, Category, and Announcement slides */
 .product-slide::before,
-.category-slide::before {
+.category-slide::before,
+.announcement-slide::before { /* Added .announcement-slide::before */
   content: '';
   position: absolute;
   top: 50%;
