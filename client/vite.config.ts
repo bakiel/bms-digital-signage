@@ -5,7 +5,7 @@ import path from 'path' // For path resolution
 // https://vite.dev/config/
 export default defineConfig({
   root: '.', // Explicitly set root to the current directory (client)
-  // base: '', // Reverted: Remove base path for local dev
+  base: '/bms-digital-signage/', // Set base path for GitHub Pages deployment
   publicDir: 'public', // Explicitly set public directory relative to root
   // build: { // Reverted: Remove specific build output for GH Pages
   //   outDir: '../docs', 
