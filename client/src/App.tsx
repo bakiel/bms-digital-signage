@@ -1,7 +1,7 @@
 import './index.css'; // Import global styles
 // import React from 'react'; // Not needed for JSX transform
 import { useEffect } from 'react';
-import { BrowserRouter, Routes, Route, useNavigate } from 'react-router-dom'; // Import useNavigate
+import { Routes, Route, useNavigate } from 'react-router-dom'; // Removed BrowserRouter
 import { AuthProvider } from './context/AuthContext';
 import ProtectedRoute from './components/ProtectedRoute';
 import AdminLayout from '@admin/components/AdminLayout'; // Use alias

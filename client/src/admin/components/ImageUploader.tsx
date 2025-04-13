@@ -4,7 +4,7 @@ import {
   FiUpload, 
   FiImage, 
   FiAlertCircle, 
-  FiCheck, 
+  // FiCheck, // Removed unused import
   FiLoader 
 } from 'react-icons/fi';
 
@@ -79,7 +79,8 @@ const ImageUploader: React.FC<ImageUploaderProps> = ({ bucket, onUploadComplete 
         });
       }, 300);
       
-      const { data, error: uploadError } = await supabase.storage
+      // Only destructure the error, as data is unused
+      const { error: uploadError } = await supabase.storage 
         .from(bucket)
         .upload(fileName, selectedFile, {
           cacheControl: '3600',

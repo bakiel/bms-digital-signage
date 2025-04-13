@@ -4,7 +4,8 @@ import { supabase } from '@/utils/supabaseClient';
 import ImageManager from './ImageManager'; // Assuming this uses admin.css or is self-contained
 import ImageUploader from './ImageUploader'; // Assuming this uses admin.css or is self-contained
 import { 
-  FiLoader, FiAlertCircle, FiCheckCircle, FiImage, FiX, FiPlus, FiDollarSign, FiPackage, FiTag, FiToggleRight, FiSave, FiArrowLeft, FiUpload, FiFolderPlus, FiGlobe
+  FiLoader, FiAlertCircle, FiCheckCircle, FiImage, FiX, FiPlus, FiDollarSign, FiPackage, FiTag, FiToggleRight, FiSave, FiArrowLeft
+  // Removed unused: FiUpload, FiFolderPlus, FiGlobe
 } from 'react-icons/fi'; // Icons remain
 
 // Define available currencies
