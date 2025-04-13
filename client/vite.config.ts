@@ -7,10 +7,10 @@ export default defineConfig({
   root: '.', // Explicitly set root to the current directory (client)
   base: '/bms-digital-signage/', // Set base path for GitHub Pages deployment
   publicDir: 'public', // Explicitly set public directory relative to root
-  // build: { // Reverted: Remove specific build output for GH Pages
-  //   outDir: '../docs', 
-  //   emptyOutDir: true, 
-  // },
+  build: { // Ensure build output goes directly to docs for GH Pages
+    outDir: '../docs', 
+    emptyOutDir: true, 
+  },
   plugins: [
     react(),
     // Tailwind CSS is now handled by PostCSS
