@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>Redirecting...</title>
+    <script>
+      // Store the full path requested, including query and hash
+      const path = window.location.pathname;
+      const query = window.location.search;
+      const hash = window.location.hash;
+      const fullPath = path + query + hash;
+
+      // Use sessionStorage to pass the intended path to index.html
+      // This is a common pattern for SPA routing on static hosts
+      sessionStorage.redirect = fullPath;
+
+      // Determine the base path dynamically or use the known one
+      // Assuming the base path is '/bms-digital-signage/' as configured
+      const basePath = '/bms-digital-signage/';
+
+      // Redirect to the root index.html within the base path
+      // Pass the original query and hash along
+      window.location.replace(basePath + query + hash);
+    </script>
+  </head>
+  <body>
+    If you are not redirected automatically, please click <a id="redirect-link" href="/bms-digital-signage/">here</a>.
+    <script>
+      // Update the link href just in case script runs before body renders fully
+      // Ensure the link points to the base path
+      document.getElementById('redirect-link').href = '/bms-digital-signage/' + window.location.search + window.location.hash;
+    </script>
+  </body>
+</html>
