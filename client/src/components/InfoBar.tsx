@@ -42,23 +42,58 @@ const InfoBar: React.FC = () => {
   // Fetch weather data
   useEffect(() => {
     const fetchWeather = async () => {
-      try {
-        // If you have a weather API key set up:
-        // const apiKey = import.meta.env.VITE_WEATHER_API_KEY;
-        // const response = await fetch(
-        //   `https://api.openweathermap.org/data/2.5/weather?q=${storeLocation},BW&units=metric&appid=${apiKey}`
-        // );
-        // const data = await response.json();
-        // setWeather(data);
-        
+      const apiKey = import.meta.env.VITE_WEATHER_API_KEY;
+      if (!apiKey) {
+        console.warn('Weather API key (VITE_WEATHER_API_KEY) not found. Using placeholder data.');
         // Placeholder weather data if API key is unavailable:
         setWeather({
           main: { temp: 28 },
           weather: [{ description: 'Sunny', main: 'Clear' }], // Added main for emoji mapping
           name: storeLocation // Use store location from settings
         });
+        return; // Exit if no API key
+      }
+
+      try {
+        // Use Weatherstack API
+        const response = await fetch(
+          `http://api.weatherstack.com/current?access_key=${apiKey}&query=${encodeURIComponent(storeLocation)}&units=m` // Use units=m for metric
+        );
+        
+        if (!response.ok) {
+          // Attempt to parse error from Weatherstack if possible
+          let errorData;
+          try {
+            errorData = await response.json();
+          } catch (parseError) {
+            // Ignore parse error, throw generic error
+          }
+          throw new Error(`Weather API request failed with status ${response.status}: ${errorData?.error?.info || response.statusText}`);
+        }
+        
+        const data = await response.json();
+
+        if (data.error) {
+           throw new Error(`Weatherstack API error: ${data.error.info}`);
+        }
+
+        if (data.current) {
+          // Map Weatherstack response to the structure expected by the component
+          const weatherDescription = data.current.weather_descriptions?.[0] || 'Unknown';
+          setWeather({
+            main: { temp: data.current.temperature },
+            // Use description for both fields, as Weatherstack doesn't have a simple 'main' category like OpenWeatherMap
+            weather: [{ description: weatherDescription, main: weatherDescription }], 
+            name: data.location?.name || storeLocation // Use location name from response if available
+          });
+        } else {
+           console.warn('Weather data received, but "current" field is missing:', data);
+           // Optionally set placeholder or error state here
+        }
+
       } catch (error) {
-        console.error('Error fetching weather:', error);
+        console.error('Error fetching or processing weather:', error);
+        // Optionally set placeholder or error state here
       }
     };
     
