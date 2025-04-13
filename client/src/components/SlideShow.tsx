@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
+import { useNavigate } from 'react-router-dom'; // Import useNavigate
 import { motion, AnimatePresence } from 'framer-motion';
 import { supabase } from '../utils/supabaseClient';
 import { getSettings, Settings as SettingsData } from '../utils/settingsUtils';
@@ -42,6 +43,7 @@ const SlideShow: React.FC = () => {
 
   // Ref to track mount status
   const isMounted = useRef(true);
+  const navigate = useNavigate(); // Get navigate function
 
   // Effect for fetching data, settings, subscriptions, and auto-advance
   useEffect(() => {
@@ -309,7 +311,7 @@ const SlideShow: React.FC = () => {
         <div className={`admin-controls ${cursorMoved ? 'controls-visible' : ''}`}>
           <button
             className="admin-button"
-            onClick={() => window.location.href = '/admin'}
+            onClick={() => navigate('/admin')} // Use navigate for SPA routing
           >
             Admin
           </button>

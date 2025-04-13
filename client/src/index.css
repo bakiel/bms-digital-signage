@@ -494,18 +494,11 @@ body {
   overflow: hidden; /* Ensure pseudo-element doesn't overflow */
 }
 
-/* Subtle background overlay for focus */
-.announcement-slide::before {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
+/* Apply background directly to the slide, not pseudo-element */
+.announcement-slide {
   background: radial-gradient(circle at center, rgba(0, 0, 0, 0.1) 0%, rgba(0, 0, 0, 0.4) 70%, rgba(0, 0, 0, 0.7) 100%),
               linear-gradient(135deg, var(--color-primary-dark), var(--color-primary)); /* Combine radial with original gradient */
-  z-index: -1; /* Place behind content but above main animated background */
-  opacity: 0.8; /* Adjust opacity as needed */
+  /* Keep other .announcement-slide styles below */
 }
 
 /* Explicitly set title and content color to white for contrast */
@@ -544,9 +537,11 @@ body {
   transform: translate(-50%, -50%); /* Center the pseudo-element */
   width: 40%; /* Adjust size as needed */
   height: 40%; /* Adjust size as needed */
-  background-image: url('./assets/bms-logo-watermark.svg'); /* Use relative path from src/index.css */
+  background-image: url('./assets/bms-logo-watermark.svg');
   background-repeat: no-repeat;
   background-position: center;
+  /* Ensure background doesn't repeat or tile if watermark is smaller */
+  background-attachment: fixed; /* Optional: Keep watermark fixed relative to viewport */
   background-size: contain;
   opacity: 0.04; /* Very low opacity for watermark effect */
   z-index: -1; /* Place behind slide content */
