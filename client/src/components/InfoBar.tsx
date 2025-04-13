@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { supabase } from '../utils/supabaseClient';
 import { getSettings } from '../utils/settingsUtils';
 import { Announcement } from '../types';
+import bmsLogoWhite from '@/assets/bms-logo-white.svg'; // Import the logo
 
 const InfoBar: React.FC = () => {
   const [currentTime, setCurrentTime] = useState(new Date());
@@ -112,8 +113,8 @@ const InfoBar: React.FC = () => {
   
   return (
     <div className="info-bar">
-      {/* Logo - Use relative path for GH Pages */}
-      <img src="images/1_BMS white Logo.svg" alt="BMS Logo" className="info-bar-logo" />
+      {/* Logo - Use imported logo */}
+      <img src={bmsLogoWhite} alt="BMS Logo" className="info-bar-logo" />
       
       {/* Time & Date */}
       <div className="info-bar-datetime">
