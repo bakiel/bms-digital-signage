@@ -543,7 +543,7 @@ body {
   transform: translate(-50%, -50%); /* Center the pseudo-element */
   width: 40%; /* Adjust size as needed */
   height: 40%; /* Adjust size as needed */
-  background-image: url('/images/2_BMS_Logo.svg');
+  background-image: url('./assets/bms-logo-watermark.svg'); /* Updated path */
   background-repeat: no-repeat;
   background-position: center;
   background-size: contain;
