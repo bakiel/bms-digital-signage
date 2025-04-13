@@ -1,0 +1,7 @@
+name,description,image_url,icon,color,display_order
+School Uniforms,Complete range of uniforms for all local schools,uniforms/category-uniforms.png,shirt,#4b5563,1
+Stationery,Essential stationery and supplies for students,stationery/category-stationery.png,pencil,#10b981,2
+Books,Textbooks and reading materials for all grades,books/category-books.png,book,#f59e0b,3
+Electronics,Calculators and electronic devices for school,electronics/category-electronics.png,calculator,#6366f1,4
+Bags,School bags and backpacks for all ages,bags/category-bags.png,briefcase,#ef4444,5
+Sports Equipment,Sports gear and equipment for physical education,sports/category-sports.png,ball,#8b5cf6,6

@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useCallback } from 'react';
+import React, { useState, useEffect } from 'react'; // Removed unused useCallback
 import { motion, AnimatePresence } from 'framer-motion';
 import MockProductSlide from './slides/MockProductSlide';
 import MockCategorySlide from './slides/MockCategorySlide';

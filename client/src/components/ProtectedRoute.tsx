@@ -1,5 +1,5 @@
 import React from 'react';
-    import { Navigate } from 'react-router-dom';
+    // import { Navigate } from 'react-router-dom'; // Navigate is unused
     import { useAuth } from '../context/AuthContext'; // Corrected path
 
     type ProtectedRouteProps = {
@@ -7,7 +7,7 @@ import React from 'react';
     };
 
     const ProtectedRoute: React.FC<ProtectedRouteProps> = ({ children }) => {
-      const { user, loading } = useAuth();
+      const { loading } = useAuth(); // user is unused
 
       if (loading) {
         return (

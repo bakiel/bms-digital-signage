@@ -1,6 +1,7 @@
-import React, { useState, useEffect } from 'react';
-import { motion, AnimatePresence } from 'framer-motion'; 
+import React, { useState, useEffect, useRef } from 'react';
+import { motion, AnimatePresence } from 'framer-motion';
 import { supabase } from '../utils/supabaseClient';
+import { getSettings, Settings as SettingsData } from '../utils/settingsUtils';
 import { Product, Category, Announcement } from '../types';
 import ProductSlide from './slides/ProductSlide';
 import CategorySlide from './slides/CategorySlide';
@@ -14,132 +15,165 @@ type Slide = {
   priority?: number;
 };
 
-// Animation variants for a more dynamic "transformer-like" effect
+// Simplified cross-fade animation variants
 const slideVariants = {
-  enter: (direction: number) => ({
-    x: direction > 0 ? '100%' : '-100%',
+  enter: {
     opacity: 0,
-    scale: 0.7, 
-    rotateY: direction > 0 ? -60 : 60, 
-    filter: "blur(10px)" 
-  }),
+  },
   center: {
     zIndex: 1,
-    x: 0,
     opacity: 1,
-    scale: 1, 
-    rotateY: 0,
-    filter: "blur(0px)" 
   },
-  exit: (direction: number) => ({
+  exit: {
     zIndex: 0,
-    x: direction < 0 ? '100%' : '-100%',
     opacity: 0,
-    scale: 0.7, 
-    rotateY: direction < 0 ? 60 : -60, 
-    filter: "blur(10px)" 
-  })
+  }
 };
 
 const SlideShow: React.FC = () => {
   const [slides, setSlides] = useState<Slide[]>([]);
-  const [[page, direction], setPage] = useState([0, 0]); 
-  const [isFullscreen, setIsFullscreen] = useState(!!document.fullscreenElement); 
+  const [[page, direction], setPage] = useState([0, 0]);
+  const [isFullscreen, setIsFullscreen] = useState(!!document.fullscreenElement);
   const [isLoading, setIsLoading] = useState(true);
-  const [cursorMoved, setCursorMoved] = useState(false); // State for cursor activity
-  
-  // Fetch slides
+  const [cursorMoved, setCursorMoved] = useState(false);
+  const [isFetching, setIsFetching] = useState(false);
+  const [settings, setSettings] = useState<SettingsData | null>(null); // State for settings
+  const [transitionDuration, setTransitionDuration] = useState(0.4); // Default transition duration
+
+  // Ref to track mount status
+  const isMounted = useRef(true);
+
+  // Effect for fetching data, settings, subscriptions, and auto-advance
   useEffect(() => {
-    const fetchSlides = async () => {
-      setIsLoading(true);
-      // ... (fetch logic remains the same) ...
-       // Fetch products
-      const { data: products } = await supabase
-        .from('products')
-        .select('*, category:categories(*), product_prices(*)')
-        .eq('active', true)
-        .eq('featured', true);
-      
-      // Fetch categories
-      const { data: categories } = await supabase
-        .from('categories')
-        .select('*')
-        .order('display_order', { ascending: true, nullsFirst: false });
-      
-      // Fetch announcements
-      const { data: announcements } = await supabase
-        .from('announcements')
-        .select('*')
-        .eq('active', true)
-        .eq('type', 'slide');
-      
-      // Create slides array
-      const productSlides: Slide[] = (products || []).map(product => ({
-        id: `product-${product.id}`,
-        type: 'product',
-        data: product,
-        priority: product.special ? 2 : 1
-      }));
-      
-      const categorySlides: Slide[] = (categories || []).map(category => ({
-        id: `category-${category.id}`,
-        type: 'category',
-        data: category,
-        priority: 0
-      }));
-      
-      const announcementSlides: Slide[] = (announcements || []).map(announcement => ({
-        id: `announcement-${announcement.id}`,
-        type: 'announcement',
-        data: announcement,
-        priority: 3
-      }));
-      
-      // Combine all slides
-      const allSlides = [...productSlides, ...categorySlides, ...announcementSlides];
-      
-      // Sort by priority (higher numbers first)
-      allSlides.sort((a, b) => (b.priority || 0) - (a.priority || 0));
-      
-      setSlides(allSlides);
-      // Simulate loading time if needed for testing animation
-      // setTimeout(() => setIsLoading(false), 1500); 
-      setIsLoading(false); 
+    // Set mount status to true when component mounts
+    isMounted.current = true;
+
+    let intervalId: NodeJS.Timeout | null = null;
+    let productsSubscription: ReturnType<typeof supabase.channel> | null = null;
+    let announcementsSubscription: ReturnType<typeof supabase.channel> | null = null;
+
+    const fetchDataAndSettings = async () => {
+      if (isFetching || !isMounted.current) return;
+
+      console.log("Fetching slides and settings...");
+      setIsFetching(true);
+      setIsLoading(true); // Ensure loading state is true during fetch
+
+      try {
+        const [settingsResult, productsResult, categoriesResult, announcementsResult] = await Promise.all([
+          getSettings(),
+          supabase.from('products').select('*, category:categories(*), product_prices(*)').eq('active', true).eq('featured', true),
+          supabase.from('categories').select('*').order('display_order', { ascending: true, nullsFirst: false }),
+          supabase.from('announcements').select('*').eq('active', true).eq('type', 'slide')
+        ]);
+
+        // Check mount status after promises resolve
+        if (!isMounted.current) return;
+
+        // Process Settings
+        setSettings(settingsResult);
+        setTransitionDuration(settingsResult.transition_duration);
+
+        // Check for data fetching errors
+        if (productsResult.error) throw productsResult.error;
+        if (categoriesResult.error) throw categoriesResult.error;
+        if (announcementsResult.error) throw announcementsResult.error;
+
+        const products = productsResult.data || [];
+        const categories = categoriesResult.data || [];
+        const announcements = announcementsResult.data || [];
+
+        // Create and sort slides
+        const productSlides: Slide[] = products.map(p => ({ id: `product-${p.id}`, type: 'product', data: p, priority: p.special ? 2 : 1 }));
+        const categorySlides: Slide[] = categories.map(c => ({ id: `category-${c.id}`, type: 'category', data: c, priority: 0 }));
+        const announcementSlides: Slide[] = announcements.map(a => ({ id: `announcement-${a.id}`, type: 'announcement', data: a, priority: 3 }));
+        const allSlides = [...productSlides, ...categorySlides, ...announcementSlides];
+        allSlides.sort((a, b) => (b.priority || 0) - (a.priority || 0));
+
+        setSlides(allSlides);
+        setIsLoading(false); // Set loading to false after data is processed
+
+      } catch (error) {
+        console.error("Error fetching slides/settings:", error);
+        if (isMounted.current) setIsLoading(false); // Ensure loading stops on error
+      } finally {
+        if (isMounted.current) setIsFetching(false);
+        console.log("Finished fetching slides and settings.");
+      }
     };
-    
-    fetchSlides();
-    
-    // ... (subscriptions remain the same) ...
-    const productsSubscription = supabase
+
+    // Initial fetch
+    fetchDataAndSettings();
+
+    // Setup subscriptions
+    productsSubscription = supabase
       .channel('public:products')
-      .on('postgres_changes', { event: '*', schema: 'public', table: 'products' }, fetchSlides)
+      .on('postgres_changes', { event: '*', schema: 'public', table: 'products' }, () => {
+        console.log("Product change detected, refetching...");
+        fetchDataAndSettings(); // Refetch all data on changes
+      })
       .subscribe();
-    
-    const announcementsSubscription = supabase
+
+    announcementsSubscription = supabase
       .channel('public:announcements')
-      .on('postgres_changes', { event: '*', schema: 'public', table: 'announcements' }, fetchSlides)
+      .on('postgres_changes', { event: '*', schema: 'public', table: 'announcements' }, () => {
+        console.log("Announcement change detected, refetching...");
+        fetchDataAndSettings(); // Refetch all data on changes
+      })
       .subscribe();
-    
+
+    // Cleanup function
     return () => {
-      productsSubscription.unsubscribe();
-      announcementsSubscription.unsubscribe();
+      console.log("Cleaning up SlideShow effect...");
+      isMounted.current = false; // Set mount status to false on unmount
+      if (intervalId) clearInterval(intervalId);
+      if (productsSubscription) supabase.removeChannel(productsSubscription);
+      if (announcementsSubscription) supabase.removeChannel(announcementsSubscription);
     };
-  }, []);
-  
-  // Auto-advance slides
+  }, []); // Run only on mount
+
+  // Effect for setting up auto-advance based on settings and slides
   useEffect(() => {
-    if (isLoading || slides.length === 0) return; 
-    
-    const slideDuration = 8000; 
-    
-    const interval = setInterval(() => {
-      const nextPage = (page + 1) % slides.length;
-      setPage([nextPage, 1]); 
-    }, slideDuration);
-    
-    return () => clearInterval(interval);
-  }, [isLoading, slides, page]); 
-  
+    let intervalId: NodeJS.Timeout | null = null;
+
+    const setupAutoAdvance = () => {
+      if (!isMounted.current || isLoading || !settings || slides.length === 0) {
+         if (intervalId) clearInterval(intervalId); // Clear any existing interval if conditions not met
+         console.log("Auto-advance setup skipped (loading, no settings, no slides, or unmounted).");
+         return;
+      }
+
+      const autoRotationEnabled = settings.enable_auto_rotation;
+      const slideDuration = settings.display_duration * 1000;
+
+      // Clear existing interval before setting a new one
+      if (intervalId) clearInterval(intervalId);
+
+      if (autoRotationEnabled) {
+        console.log(`Setting up auto-advance with duration: ${slideDuration}ms`);
+        intervalId = setInterval(() => {
+          if (isMounted.current) { // Check mount status before setting state
+            setPage(prevPage => [(prevPage[0] + 1) % slides.length, 1]);
+          }
+        }, slideDuration);
+      } else {
+        console.log("Auto-advance disabled.");
+      }
+    };
+
+    setupAutoAdvance(); // Call setup
+
+    // Cleanup for this effect specifically
+    return () => {
+      if (intervalId) {
+         clearInterval(intervalId);
+         console.log("Cleared auto-advance interval on settings/slides/loading change.");
+      }
+    };
+  // Rerun when loading state, settings, or slides change
+  }, [isLoading, settings, slides]);
+
+
   // Show/hide admin controls on cursor movement
   useEffect(() => {
     let timeoutId: NodeJS.Timeout | null = null;
@@ -150,34 +184,33 @@ const SlideShow: React.FC = () => {
     };
 
     window.addEventListener('mousemove', handleMouseMove);
-    // Initial move to show controls briefly on load
-    handleMouseMove(); 
+    handleMouseMove(); // Initial move
 
     return () => {
       window.removeEventListener('mousemove', handleMouseMove);
       if (timeoutId) clearTimeout(timeoutId);
     };
-  }, []); // Run once on mount
+  }, []);
 
   // Handle keyboard navigation
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
-      if (isLoading) return; 
+      if (isLoading || slides.length === 0) return;
 
-      if (e.key === 'ArrowRight' && slides.length > 0) {
+      if (e.key === 'ArrowRight') {
         const nextPage = (page + 1) % slides.length;
-        setPage([nextPage, 1]); 
-      } else if (e.key === 'ArrowLeft' && slides.length > 0) {
+        setPage([nextPage, 1]);
+      } else if (e.key === 'ArrowLeft') {
         const prevPage = (page - 1 + slides.length) % slides.length;
-        setPage([prevPage, -1]); 
+        setPage([prevPage, -1]);
       } else if (e.key === 'f') {
         toggleFullscreen();
       }
     };
-    
+
     window.addEventListener('keydown', handleKeyDown);
     return () => window.removeEventListener('keydown', handleKeyDown);
-  }, [isLoading, slides.length, page]); 
+  }, [isLoading, slides.length, page]);
 
   // Toggle fullscreen
   const toggleFullscreen = () => {
@@ -187,7 +220,7 @@ const SlideShow: React.FC = () => {
       document.exitFullscreen().catch(err => console.error('Error attempting to exit fullscreen:', err));
     }
   };
-  
+
   // Update fullscreen state on change
   useEffect(() => {
     const handleFullscreenChange = () => {
@@ -210,7 +243,7 @@ const SlideShow: React.FC = () => {
         return null;
     }
   };
-  
+
   // Loading State
   if (isLoading) {
     return (
@@ -224,7 +257,7 @@ const SlideShow: React.FC = () => {
       </div>
     );
   }
-  
+
   // Empty State
   if (slides.length === 0) {
     return (
@@ -233,38 +266,29 @@ const SlideShow: React.FC = () => {
       </div>
     );
   }
-  
+
   // Main Render using Flexbox Layout
   return (
-    <div className="signage-layout"> {/* New top-level container */}
-      {/* Info Bar (Header) */}
+    <div className="signage-layout">
       <InfoBar />
-      
-      {/* Main Content Area (Slideshow) */}
-      <main className="signage-main-content"> {/* Flex-grow area */}
-        <AnimatePresence initial={false} custom={direction} mode="wait"> 
+      <main className="signage-main-content">
+        <AnimatePresence initial={false} custom={direction} mode="wait">
           <motion.div
-            key={page} 
-            custom={direction} 
+            key={page}
+            custom={direction}
             variants={slideVariants}
             initial="enter"
             animate="center"
             exit="exit"
             transition={{
-              type: "spring", 
-              stiffness: 150, 
-              damping: 20,    
-              opacity: { duration: 0.4 }, 
-              filter: { duration: 0.4 }
+              opacity: { duration: transitionDuration }
             }}
-            className="slide-wrapper" /* Wrapper for positioning */
+            className="slide-wrapper"
           >
-            {renderSlide(slides[page])} 
+            {renderSlide(slides[page])}
           </motion.div>
-        </AnimatePresence> 
+        </AnimatePresence>
       </main>
-      
-      {/* Footer */}
       <footer className="footer">
         <div className="footer-content">
           BMS Digital Signage — Powered by Aleph Creative-Hub
@@ -273,27 +297,27 @@ const SlideShow: React.FC = () => {
           {slides.map((_, index) => (
             <button
               key={index}
-              className={`slide-indicator ${index === page ? 'active' : ''}`} 
+              className={`slide-indicator ${index === page ? 'active' : ''}`}
               onClick={() => {
                 const newDirection = index > page ? 1 : -1;
-                setPage([index, newDirection]); 
+                setPage([index, newDirection]);
               }}
               aria-label={`Go to slide ${index + 1}`}
             />
           ))}
         </div>
         <div className={`admin-controls ${cursorMoved ? 'controls-visible' : ''}`}>
-          <button 
+          <button
             className="admin-button"
             onClick={() => window.location.href = '/admin'}
           >
             Admin
           </button>
-          <button 
+          <button
             className="admin-button"
             onClick={toggleFullscreen}
           >
-            {isFullscreen ? 'Exit Fullscreen' : 'Fullscreen'} 
+            {isFullscreen ? 'Exit Fullscreen' : 'Fullscreen'}
           </button>
         </div>
       </footer>

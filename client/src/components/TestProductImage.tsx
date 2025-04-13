@@ -88,8 +88,7 @@ const TestProductImage: React.FC = () => {
                     <ProductImage 
                       src={product.image_url} 
                       alt={product.name}
-                      // Extract bucket from image_url if it contains a slash
-                      category={product.image_url.includes('/') ? product.image_url.split('/')[0] : 'products'}
+                      // category={product.image_url.includes('/') ? product.image_url.split('/')[0] : 'products'} // Removed incorrect prop
                       className="max-h-40 object-contain"
                     />
                   ) : (
@@ -117,8 +116,7 @@ const TestProductImage: React.FC = () => {
                     <ProductImage 
                       src={category.image_url} 
                       alt={category.name}
-                      // Extract bucket from image_url if it contains a slash
-                      category={category.image_url.includes('/') ? category.image_url.split('/')[0] : 'products'}
+                      // category={category.image_url.includes('/') ? category.image_url.split('/')[0] : 'products'} // Removed incorrect prop
                       className="max-h-40 object-contain"
                     />
                   ) : (

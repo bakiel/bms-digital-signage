@@ -1,9 +1,16 @@
+import path from 'path'; // Import path
+
 /** @type {import('tailwindcss').Config} */
 export default {
   content: [
-    "./index.html",
-    "./src/**/*.{js,ts,jsx,tsx}", // Scan all JS/TS/JSX/TSX files in src
+    path.resolve(__dirname, "./index.html"),
+    path.resolve(__dirname, "./src/**/*.{js,ts,jsx,tsx}"), // Scan src...
+    // Exclude the admin subdirectory within src
+    `!${path.resolve(__dirname, "./src/admin/**/*.{js,ts,jsx,tsx}")}`,
   ],
+  // Remove the safelist, as admin styles are handled separately
+  safelist: [],
+  // Removed diagnostic safelist
   theme: {
     extend: {
       backgroundImage: {

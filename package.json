@@ -1,0 +1,14 @@
+{
+  "name": "bms-digital-signage",
+  "version": "1.0.0",
+  "description": "BMS Digital Signage System",
+  "type": "module",
+  "scripts": {
+    "apply-settings-migration": "node apply-settings-migration.js",
+    "start-client": "cd client && npm run dev"
+  },
+  "dependencies": {
+    "@supabase/supabase-js": "^2.49.4",
+    "dotenv": "^16.4.7"
+  }
+}

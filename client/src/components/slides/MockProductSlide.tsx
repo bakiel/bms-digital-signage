@@ -1,7 +1,7 @@
 import React from 'react';
 import { motion } from 'framer-motion';
 import MockProductImage from '../MockProductImage';
-import { formatCurrency, formatDiscountedPrice, formatTieredPrice } from '../../utils/currencyUtils';
+import { formatCurrency } from '../../utils/currencyUtils'; // Removed unused formatDiscountedPrice, formatTieredPrice
 
 type Product = {
   id: string;

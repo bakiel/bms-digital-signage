@@ -1,0 +1,374 @@
+/* ImageManager.css - Styles for the Media Library Modal */
+
+.image-manager-container {
+  /* Container for the preview/button part */
+  margin-bottom: 1rem; /* Add some space below */
+}
+
+/* Modal Overlay */
+.image-manager-modal-overlay {
+  position: fixed;
+  inset: 0;
+  background-color: rgba(107, 114, 128, 0.75); /* bg-gray-500 bg-opacity-75 */
+  z-index: 50; /* Ensure it's above other content */
+  display: flex;
+  align-items: center; /* Center vertically */
+  justify-content: center; /* Center horizontally */
+  padding: 1rem; /* Add padding for smaller screens */
+  overflow-y: auto; /* Allow scrolling if content overflows */
+}
+
+/* Modal Content Box */
+.image-manager-modal-content {
+  background-color: white;
+  border-radius: 0.5rem; /* rounded-lg */
+  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05); /* shadow-xl */
+  padding: 1.5rem; /* p-6 */
+  width: 100%;
+  max-width: 64rem; /* max-w-6xl, adjust as needed */
+  max-height: 90vh; /* Limit height */
+  display: flex;
+  flex-direction: column;
+  overflow: hidden; /* Prevent internal overflow */
+}
+
+/* Modal Header */
+.image-manager-modal-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding-bottom: 1rem; /* mb-4 equivalent */
+  border-bottom: 1px solid #e5e7eb; /* border-gray-200 */
+  flex-shrink: 0; /* Prevent header from shrinking */
+}
+
+.image-manager-modal-header h3 {
+  font-size: 1.125rem; /* text-lg */
+  font-weight: 600; /* font-medium */
+  color: #111827; /* text-gray-900 */
+}
+
+.image-manager-modal-close-btn {
+  background: none;
+  border: none;
+  color: #9ca3af; /* text-gray-400 */
+  cursor: pointer;
+  padding: 0.25rem;
+}
+
+.image-manager-modal-close-btn:hover {
+  color: #6b7280; /* hover:text-gray-500 */
+}
+
+.image-manager-modal-close-btn svg {
+  width: 1.5rem; /* h-6 w-6 */
+  height: 1.5rem;
+}
+
+/* Modal Body */
+.image-manager-modal-body {
+  flex-grow: 1; /* Allow body to take available space */
+  overflow-y: hidden; /* Body itself shouldn't scroll, main content will */
+  padding-top: 1rem;
+  padding-bottom: 1rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem; /* Space between elements */
+}
+
+/* Bucket Tabs */
+.image-manager-tabs {
+  border-bottom: 1px solid #e5e7eb; /* border-gray-200 */
+  display: flex;
+  gap: 2rem; /* space-x-8 */
+  margin-bottom: -1px; /* Overlap border */
+  flex-shrink: 0; /* Prevent tabs from shrinking */
+}
+
+.image-manager-tab {
+  background: none;
+  border: none;
+  padding: 1rem 0.25rem; /* py-4 px-1 */
+  border-bottom: 2px solid transparent;
+  font-size: 0.875rem; /* text-sm */
+  font-weight: 500; /* font-medium */
+  color: #6b7280; /* text-gray-500 */
+  cursor: pointer;
+  white-space: nowrap;
+  transition: color 0.15s, border-color 0.15s;
+}
+
+.image-manager-tab:hover {
+  color: #374151; /* hover:text-gray-700 */
+  border-bottom-color: #d1d5db; /* hover:border-gray-300 */
+}
+
+.image-manager-tab.active {
+  color: #2563eb; /* text-blue-600 */
+  border-bottom-color: #2563eb; /* border-blue-500 */
+}
+
+/* Toolbar */
+.image-manager-toolbar {
+  display: flex;
+  flex-wrap: wrap; /* Allow wrapping */
+  justify-content: space-between;
+  align-items: center;
+  gap: 1rem; /* Add gap */
+  padding-top: 1rem;
+  padding-bottom: 1rem;
+  flex-shrink: 0; /* Prevent toolbar from shrinking */
+}
+
+.image-manager-search {
+  position: relative;
+  width: 100%; /* Full width on small screens */
+  max-width: 20rem; /* Limit width on larger screens */
+}
+
+.image-manager-search svg {
+  position: absolute;
+  left: 0.75rem; /* pl-3 */
+  top: 50%;
+  transform: translateY(-50%);
+  width: 1.25rem; /* h-5 w-5 */
+  height: 1.25rem;
+  color: #9ca3af; /* text-gray-400 */
+  pointer-events: none;
+}
+
+.image-manager-search input {
+  width: 100%;
+  padding: 0.5rem 0.75rem 0.5rem 2.5rem; /* pl-10 */
+  border: 1px solid #d1d5db; /* border-gray-300 */
+  border-radius: 0.375rem; /* rounded-md */
+  font-size: 0.875rem; /* text-sm */
+}
+
+.image-manager-search input:focus {
+  outline: none;
+  border-color: #2563eb; /* focus:border-blue-500 */
+  box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.3); /* focus:ring */
+}
+
+/* Main Content Area (Grid + Details) */
+.image-manager-main-content {
+  display: grid;
+  grid-template-columns: minmax(0, 3fr) minmax(0, 1fr); /* Grid takes more space, add minmax(0) */
+  gap: 1.5rem; /* Gap between grid and details */
+  flex-grow: 1; /* Allow this area to grow and fill space */
+  min-height: 300px; /* Ensure minimum height */
+}
+
+/* Image Grid - FIXED VERSION */
+.image-manager-grid {
+  display: grid;
+  /* FIX: Use fixed pixel width for grid items instead of responsive sizing */
+  grid-template-columns: repeat(auto-fill, 110px);
+  /* FIX: Increase gap between items to ensure they never overlap */
+  gap: 1rem;
+  overflow-y: auto; /* Allow scrolling */
+  /* FIX: Add scrollbar-gutter property to reserve space for scrollbar */
+  scrollbar-gutter: stable;
+  padding: 0.5rem; /* Use uniform padding */
+  background-color: #f9fafb; /* bg-gray-50 */
+  border-radius: 0.375rem; /* rounded-md */
+  border: 1px solid #e5e7eb; /* Add border */
+  align-content: start; /* Align items to the start */
+  
+  /* FIX: Force width recalculation */
+  width: 100%; 
+  box-sizing: border-box;
+  
+  /* FIX: Add bottom padding to prevent last row from being cut off */
+  padding-bottom: 1.5rem;
+  
+  /* FIX: Ensure content doesn't overflow horizontally */
+  overflow-x: hidden;
+}
+
+/* FIX: Grid Item - Fixed dimensions */
+.image-manager-grid-item {
+  position: relative;
+  cursor: pointer;
+  border-radius: 0.375rem; /* rounded-md */
+  overflow: hidden;
+  border: 2px solid transparent;
+  /* FIX: Use fixed dimensions instead of aspect ratio */
+  width: 110px;
+  height: 110px;
+  background-color: #ffffff;
+  /* FIX: Ensure grid items don't get squashed */
+  flex-shrink: 0;
+  box-sizing: border-box;
+}
+
+.image-manager-grid-item:hover {
+  border-color: #9ca3af; /* hover:border-gray-400 */
+}
+
+.image-manager-grid-item.selected {
+  border-color: #2563eb; /* border-blue-500 */
+  box-shadow: 0 0 0 2px #2563eb; /* Ring effect */
+}
+
+/* Style the image within the grid item */
+.image-manager-grid-item img {
+  display: block; /* Ensure block display */
+  width: 100%; 
+  height: 100%; 
+  max-width: 100%; 
+  max-height: 100%;
+  object-fit: contain; /* Ensure whole image is visible */
+  object-position: center; 
+}
+
+/* Add a subtle background to the image tag itself for SVGs */
+.image-manager-grid-item img[src$=".svg"] {
+  background-color: #f9fafb; /* Light gray background for SVGs */
+}
+
+.image-manager-grid-item .selected-icon {
+  position: absolute;
+  top: 0.25rem; /* top-1 */
+  right: 0.25rem; /* right-1 */
+  width: 1.25rem; /* h-5 w-5 */
+  height: 1.25rem;
+  background-color: #2563eb; /* bg-blue-500 */
+  color: white;
+  border-radius: 9999px; /* rounded-full */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.125rem; /* Adjust padding for icon size */
+}
+
+.image-manager-grid-item .selected-icon svg {
+   width: 0.75rem; /* h-3 w-3 */
+   height: 0.75rem;
+}
+
+.image-manager-grid-item .image-name {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background-color: rgba(0, 0, 0, 0.6);
+  color: white;
+  font-size: 0.75rem; /* text-xs */
+  padding: 0.25rem 0.5rem;
+  text-align: center;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* Delete Button on Grid Item */
+.image-manager-delete-btn {
+  position: absolute;
+  top: 0.25rem; /* Adjust as needed */
+  left: 0.25rem; /* Adjust as needed */
+  background-color: rgba(220, 38, 38, 0.8); /* bg-red-600 with opacity */
+  color: white;
+  border: none;
+  border-radius: 9999px; /* rounded-full */
+  width: 1.5rem; /* Adjust size */
+  height: 1.5rem; /* Adjust size */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  opacity: 0; /* Hidden by default */
+  z-index: 10; /* Ensure it's above the image name */
+}
+
+.image-manager-grid-item:hover .image-manager-delete-btn {
+  opacity: 1; /* Show on hover */
+}
+
+.image-manager-delete-btn:hover {
+  background-color: rgba(185, 28, 28, 0.9); /* darker red on hover */
+}
+
+/* Selected Image Details Sidebar */
+.image-manager-details-sidebar {
+  border-left: 1px solid #e5e7eb; /* Add separator */
+  padding-left: 1.5rem; /* Add padding */
+  overflow-y: auto; /* Allow details to scroll if needed */
+  max-height: 100%; /* Use available height */
+  min-width: 0; /* Prevent details from expanding parent */
+}
+
+.image-manager-details-sidebar h4 {
+  font-size: 0.875rem; /* text-sm */
+  font-weight: 600; /* font-semibold */
+  color: #111827; /* text-gray-900 */
+  margin-bottom: 1rem;
+}
+
+.image-manager-details-sidebar .details-preview-image {
+  display: block;
+  max-width: 100%;
+  max-height: 10rem; /* Limit preview height */
+  border-radius: 0.25rem; /* rounded */
+  border: 1px solid #e5e7eb; /* border */
+  margin-bottom: 1rem;
+  background-color: #f9fafb; /* Background for contain */
+  object-fit: contain;
+}
+
+.image-manager-details-sidebar .details-info p {
+  font-size: 0.875rem; /* text-sm */
+  color: #374151; /* text-gray-700 */
+  margin-bottom: 0.5rem; /* Space out details */
+  word-break: break-all; /* Wrap long paths/names */
+  display: flex; /* Use flexbox for alignment */
+  align-items: baseline; /* Align text baseline */
+}
+
+.image-manager-details-sidebar .details-info p strong {
+  color: #6b7280; /* text-gray-500 */
+  margin-right: 0.5rem; /* Keep spacing */
+  flex-shrink: 0; /* Prevent label from shrinking */
+  /* Remove fixed width and inline-block */
+}
+
+.image-manager-details-sidebar .details-placeholder {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  color: #9ca3af; /* text-gray-400 */
+  text-align: center;
+  padding: 2rem;
+  border: 1px dashed #d1d5db;
+  border-radius: 0.375rem;
+}
+
+.image-manager-details-sidebar .details-placeholder svg {
+   width: 2.5rem;
+   height: 2.5rem;
+   margin-bottom: 0.5rem;
+}
+
+/* Modal Footer */
+.image-manager-modal-footer {
+  margin-top: 1.5rem; /* mt-6 */
+  padding-top: 1rem; /* pt-4 */
+  border-top: 1px solid #e5e7eb; /* border-gray-200 */
+  display: flex;
+  justify-content: flex-end;
+  gap: 0.75rem; /* space-x-3 */
+  flex-shrink: 0; /* Prevent footer from shrinking */
+}
+
+/* Ensure admin buttons are used correctly */
+.image-manager-modal-footer .admin-button {
+  /* Inherits base styles */
+}
+
+.image-manager-modal-footer .admin-button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}

@@ -60,9 +60,17 @@ const ProductSlide: React.FC<ProductSlideProps> = ({ product }) => {
         {/* Product Image - Apply image variants */}
         <motion.div className="product-image-container" variants={imageVariants}>
           <img 
-            src={product.image_url ? `${import.meta.env.VITE_SUPABASE_URL}/storage/v1/object/public/${product.image_url}` : '/placeholder.svg'} 
+            src={product.image_url ? 
+              (product.image_url.includes('/') 
+                ? `${import.meta.env.VITE_SUPABASE_URL}/storage/v1/object/public/${product.image_url}` 
+                : `${import.meta.env.VITE_SUPABASE_URL}/storage/v1/object/public/products/${product.image_url}`)
+              : '/placeholder.svg'} 
             alt={product.name}
             className="product-image"
+            onError={(e) => {
+              const target = e.target as HTMLImageElement;
+              target.src = "/placeholder.svg"; // Fallback
+            }}
           />
         </motion.div> 
         

@@ -1,0 +1,6 @@
+title,content,image_url,type,active,start_date,end_date
+Back to School Sale,Get up to 25% off on all school uniforms and supplies!,announcements/back-to-school-sale.png,ticker,true,2025-01-01,2025-02-28
+Exam Essentials,Stock up on all your exam essentials today!,announcements/exam-essentials.png,slide,true,2025-03-01,2025-04-30
+New Term Supplies,New term starting soon! Get all your supplies at BMS.,announcements/new-term-supplies.png,slide,true,2025-04-20,2025-06-15
+Holiday Closure Notice,We will be closed from Dec 24-26 for the holidays.,announcements/holiday-closure.png,popup,true,2025-12-20,2025-12-27
+Special Discount for Teachers,Teachers get an additional 10% off with ID!,announcements/teacher-discount.png,ticker,true,2025-06-01,2025-08-31

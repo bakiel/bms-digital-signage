@@ -48,7 +48,8 @@ CREATE TABLE announcements (
   active boolean DEFAULT true,
   start_date timestamp with time zone,
   end_date timestamp with time zone,
-  created_at timestamp with time zone DEFAULT now()
+  created_at timestamp with time zone DEFAULT now(),
+  updated_at timestamp with time zone DEFAULT now() -- Add updated_at column
 );
 
 -- Settings Table

@@ -1,0 +1,9 @@
+name,description,category_id,image_url,active,featured,special,price,original_price,tier_name,currency
+GIS Sky Blue Shirt,Short sleeve sky blue shirt for GIS,1,uniforms/shirt-ssleeve-gis-sky-blue.png,true,true,false,149.99,169.99,Size 4,BWP
+GIS Navy Jersey,Navy jersey with white stripes for GIS,1,uniforms/jersey-navy-white-stripes-gis-hs.png,true,true,false,199.99,219.99,Size 6,BWP
+GIS Tunic,Standard tunic for GIS,1,uniforms/tunic-gis.png,true,true,true,249.99,269.99,Size 8,BWP
+Casio Scientific Calculator,FX-82MS scientific calculator for students,2,stationery/calculator-casio-fx-82ms-sc3-dh-scientific.png,true,true,true,129.99,159.99,,BWP
+Pritt Glue Stick,43g glue stick for school projects,2,stationery/glue-stick-pritt-43g.png,true,false,false,19.99,24.99,,BWP
+Staedtler Colored Crayons,24-piece colored crayon set,2,stationery/crayons-coloured-24s-staedtler.png,true,false,true,59.99,69.99,,BWP
+BIC Cristal Blue Pen,Classic blue ballpoint pen,2,stationery/pen-bic-cristal-blue.png,true,true,false,3.99,,,BWP
+Duracell AAA Batteries,Pack of 4 AAA batteries,4,electronics/duracell-aaa-batteries-pack.png,true,false,false,29.99,,,BWP

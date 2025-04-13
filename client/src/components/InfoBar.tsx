@@ -1,11 +1,33 @@
 import React, { useState, useEffect } from 'react';
 import { supabase } from '../utils/supabaseClient';
+import { getSettings } from '../utils/settingsUtils';
 import { Announcement } from '../types';
 
 const InfoBar: React.FC = () => {
   const [currentTime, setCurrentTime] = useState(new Date());
   const [weather, setWeather] = useState<any>(null);
   const [announcements, setAnnouncements] = useState<Announcement[]>([]);
+  const [storeLocation, setStoreLocation] = useState('Gaborone');
+  const [storeTimezone, setStoreTimezone] = useState('Africa/Gaborone');
+  
+  // Fetch store settings
+  useEffect(() => {
+    const fetchSettings = async () => {
+      try {
+        const settings = await getSettings();
+        if (settings.store_location) {
+          setStoreLocation(settings.store_location);
+        }
+        if (settings.store_timezone) {
+          setStoreTimezone(settings.store_timezone);
+        }
+      } catch (error) {
+        console.error('Error fetching store settings:', error);
+      }
+    };
+    
+    fetchSettings();
+  }, []);
   
   // Update time every second
   useEffect(() => {
@@ -23,7 +45,7 @@ const InfoBar: React.FC = () => {
         // If you have a weather API key set up:
         // const apiKey = import.meta.env.VITE_WEATHER_API_KEY;
         // const response = await fetch(
-        //   `https://api.openweathermap.org/data/2.5/weather?q=Gaborone,BW&units=metric&appid=${apiKey}`
+        //   `https://api.openweathermap.org/data/2.5/weather?q=${storeLocation},BW&units=metric&appid=${apiKey}`
         // );
         // const data = await response.json();
         // setWeather(data);
@@ -31,7 +53,8 @@ const InfoBar: React.FC = () => {
         // Placeholder weather data if API key is unavailable:
         setWeather({
           main: { temp: 28 },
-          weather: [{ description: 'Sunny', main: 'Clear' }] // Added main for emoji mapping
+          weather: [{ description: 'Sunny', main: 'Clear' }], // Added main for emoji mapping
+          name: storeLocation // Use store location from settings
         });
       } catch (error) {
         console.error('Error fetching weather:', error);
@@ -42,7 +65,7 @@ const InfoBar: React.FC = () => {
     const interval = setInterval(fetchWeather, 30 * 60 * 1000);
     
     return () => clearInterval(interval);
-  }, []);
+  }, [storeLocation]); // Re-fetch when store location changes
   
   // Fetch ticker announcements
   useEffect(() => {
@@ -75,14 +98,16 @@ const InfoBar: React.FC = () => {
   const formattedDate = new Intl.DateTimeFormat('en-GB', {
     day: '2-digit',
     month: 'long',
-    year: 'numeric'
+    year: 'numeric',
+    timeZone: storeTimezone
   }).format(currentTime);
   
   // Format time with 12-hour clock
   const formattedTime = new Intl.DateTimeFormat('en-US', {
     hour: 'numeric',
     minute: '2-digit',
-    hour12: true
+    hour12: true,
+    timeZone: storeTimezone
   }).format(currentTime);
   
   return (
@@ -99,7 +124,7 @@ const InfoBar: React.FC = () => {
       {/* Weather */}
       {weather && (
         <div className="info-bar-weather">
-          {getWeatherEmoji(weather.weather[0]?.main)} {Math.round(weather.main.temp)}°C, Gaborone
+          {getWeatherEmoji(weather.weather[0]?.main)} {Math.round(weather.main.temp)}°C, {weather.name || storeLocation}
         </div>
       )}
       
