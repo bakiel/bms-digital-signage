@@ -1,6 +1,6 @@
 import React from 'react';
 import { Announcement } from '../../types';
-// Reverted: Removed logo import
+import bmsLogoWhite from '@/assets/bms-logo-white.svg'; // Import the logo
 
 type AnnouncementSlideProps = {
   announcement: Announcement;
@@ -9,9 +9,9 @@ type AnnouncementSlideProps = {
 const AnnouncementSlide: React.FC<AnnouncementSlideProps> = ({ announcement }) => {
   return (
     <div className="slide announcement-slide relative"> {/* Add relative positioning for absolute children */}
-      {/* BMS Logo - Reverted to absolute path including base */}
+      {/* BMS Logo - Use imported logo */}
       <img
-        src="/bms-digital-signage/images/1_BMS white Logo.svg"
+        src={bmsLogoWhite}
         alt="BMS Logo"
         className="absolute top-4 right-6 h-10 w-auto" // Position top-right, fixed height
       />

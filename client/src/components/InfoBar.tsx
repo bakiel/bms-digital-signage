@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { supabase } from '../utils/supabaseClient';
 import { getSettings } from '../utils/settingsUtils';
 import { Announcement } from '../types';
-// Reverted: Removed logo import
+import bmsLogoWhite from '@/assets/bms-logo-white.svg'; // Import the logo
 
 const InfoBar: React.FC = () => {
   const [currentTime, setCurrentTime] = useState(new Date());
@@ -113,8 +113,8 @@ const InfoBar: React.FC = () => {
   
   return (
     <div className="info-bar">
-      {/* Logo - Reverted to absolute path including base */}
-      <img src="/bms-digital-signage/images/1_BMS white Logo.svg" alt="BMS Logo" className="info-bar-logo" />
+      {/* Logo - Use imported logo */}
+      <img src={bmsLogoWhite} alt="BMS Logo" className="info-bar-logo" />
       
       {/* Time & Date */}
       <div className="info-bar-datetime">
