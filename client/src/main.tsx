@@ -7,7 +7,8 @@ import App from './App.tsx'
 
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
-    <BrowserRouter> {/* Removed basename and SpaRedirectHandler */}
+    {/* Add basename for GitHub Pages deployment */}
+    <BrowserRouter basename="/bms-digital-signage"> 
       <App />
     </BrowserRouter>
   </StrictMode>,
