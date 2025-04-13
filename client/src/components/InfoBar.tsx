@@ -112,8 +112,8 @@ const InfoBar: React.FC = () => {
   
   return (
     <div className="info-bar">
-      {/* Logo */}
-      <img src="/images/1_BMS white Logo.svg" alt="BMS Logo" className="info-bar-logo" />
+      {/* Logo - Use relative path for GH Pages */}
+      <img src="images/1_BMS white Logo.svg" alt="BMS Logo" className="info-bar-logo" />
       
       {/* Time & Date */}
       <div className="info-bar-datetime">
