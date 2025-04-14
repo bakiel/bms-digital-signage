@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '@/context/AuthContext'; // Use alias
+// No import needed for logos in public directory
 
     const Login: React.FC = () => {
       const [email, setEmail] = useState('');
@@ -35,6 +36,8 @@ import { useAuth } from '@/context/AuthContext'; // Use alias
         <div className="login-container">
           <div className="login-card">
             <div className="login-header">
+              {/* Add Logo - Use path relative to public directory */}
+              <img src="/images/2_BMS_Logo.svg" alt="BMS Logo" className="mx-auto h-16 w-auto mb-4" /> 
               <h1 className="login-title">BMS Digital Signage</h1>
               <p className="login-subtitle">Admin Login</p>
             </div>
