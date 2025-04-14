@@ -36,9 +36,9 @@ import { useAuth } from '@/context/AuthContext'; // Use alias
         <div className="login-container">
           <div className="login-card">
             <div className="login-header">
-              {/* Use dynamic base path for logo */}
+              {/* Use explicit absolute path for GH Pages */}
               <img 
-                src={`${import.meta.env.BASE_URL || '/'}images/2_BMS_Logo.svg`.replace(/\/\//g, '/')} 
+                src="/bms-digital-signage/images/2_BMS_Logo.svg" 
                 alt="BMS Logo" 
                 className="mx-auto h-16 w-auto mb-4" 
                 onError={(e) => {
