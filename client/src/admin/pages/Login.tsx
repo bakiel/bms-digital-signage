@@ -36,8 +36,17 @@ import { useAuth } from '@/context/AuthContext'; // Use alias
         <div className="login-container">
           <div className="login-card">
             <div className="login-header">
-              {/* Add Logo - Use path relative to public directory */}
-              <img src="/images/2_BMS_Logo.svg" alt="BMS Logo" className="mx-auto h-16 w-auto mb-4" /> 
+              {/* Use dynamic base path for logo */}
+              <img 
+                src={`${import.meta.env.BASE_URL || '/'}images/2_BMS_Logo.svg`.replace(/\/\//g, '/')} 
+                alt="BMS Logo" 
+                className="mx-auto h-16 w-auto mb-4" 
+                onError={(e) => {
+                  console.error("Logo failed to load:", e);
+                  // Set a fallback or just hide the image on error
+                  (e.target as HTMLImageElement).style.display = 'none';
+                }}
+              />
               <h1 className="login-title">BMS Digital Signage</h1>
               <p className="login-subtitle">Admin Login</p>
             </div>
