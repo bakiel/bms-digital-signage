@@ -29,8 +29,6 @@ html, body {
 
 body {
   font-family: 'Inter', sans-serif;
-  /* overflow: hidden; Removed - Likely causing issues with admin layout scrolling */
-  /* background-color: var(--color-background); Removed static bg color */
   color: var(--color-text);
   position: relative; /* Needed for z-index stacking & particle positioning */
 }
@@ -59,6 +57,8 @@ body {
   background-color: transparent; /* Ensure this layer doesn't block body gradient */
   width: 100vw;
   overflow: hidden; /* Prevent body scroll */
+  position: relative; /* Establish stacking context */
+  z-index: 0; /* Ensure it's part of the stacking context */
 }
 
 /* InfoBar styles (Header) */
