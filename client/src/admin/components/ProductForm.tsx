@@ -87,6 +87,16 @@ const ProductForm: React.FC = () => {
     e.preventDefault();
     try {
       setSubmitting(true); setError(null); setSuccess(null);
+
+      // --- Roo: Explicit Auth Check ---
+      const { data: { user }, error: userError } = await supabase.auth.getUser();
+      if (userError || !user) {
+        console.error("Auth check failed before submit:", { userError, user });
+        throw new Error('Authentication error or session expired. Please log out and log back in.');
+      }
+      console.log("Auth check passed. User ID:", user.id); // Roo Debug Log
+      // --- End Roo Auth Check ---
+
       if(!formData.name.trim()) throw new Error('Product name required');
       if(!formData.category_id) throw new Error('Select a category');
       for(const [i,tier] of formData.prices.entries()){
@@ -95,17 +105,41 @@ const ProductForm: React.FC = () => {
       }
       if(formData.special && !formData.prices.some(t=>t.original_price!==null)) throw new Error('Specials need original price');
       if(isEditMode && id){
-        const { error:upErr } = await supabase.from('products').update({
+        console.log("Attempting to update main product details for ID:", id); // Roo Debug Log
+        // --- Roo: Log Product Update Payload ---
+        const productPayload = {
           name:formData.name, description:formData.description, category_id:formData.category_id, image_url:formData.image_url,
           active:formData.active, featured:formData.featured, special:formData.special
-        }).eq('id',id);
+        };
+        console.log(`Product Update Payload (ID: ${id}):`, productPayload);
+        // --- End Roo Log ---
+        const { data: productUpdateData, error:upErr } = await supabase.from('products').update(productPayload).eq('id',id).select(); // Removed .single()
+        console.log("Main product update result:", { productUpdateData, upErr }); // Roo Debug Log
         if(upErr) throw upErr;
+        else if (!productUpdateData || productUpdateData.length === 0) {
+          // NEW CHECK: Treat no returned data as a potential RLS issue or other failure
+          console.error("Product update failed silently (no data returned). Product ID:", id); // Roo Debug Log
+          throw new Error(`Products table update returned no data (ID: ${id}). Check RLS/permissions.`);
+        }
+        console.log("Main product update successful. Proceeding to price updates..."); // Roo Debug Log
         for(const tier of formData.prices){
           if(tier.id){
-            const { error } = await supabase.from('product_prices').update({
+            const updatePayload = {
               tier_name:tier.tier_name, price:tier.price, original_price:tier.original_price, currency:tier.currency
-            }).eq('id',tier.id);
-            if(error) throw error;
+            };
+            // --- Roo: Log Price Tier Update Payload ---
+            console.log(`Price Tier Update Payload (Tier ID: ${tier.id}, Product ID: ${id}):`, updatePayload);
+            // --- End Roo Log ---
+            const { data: updateData, error: updateError } = await supabase.from('product_prices').update(updatePayload).eq('id',tier.id).select(); // Added .select() to see result
+            console.log(`UPDATE Result for tier ID ${tier.id}:`, { updateData, updateError }); // Roo Debug Log
+            if(updateError) {
+              console.error(`Error updating price tier ${tier.id}:`, updateError); // Roo Debug Log
+              throw updateError;
+            } else if (!updateData || updateData.length === 0) {
+              // NEW CHECK: Treat no returned data as a potential RLS issue or other failure for price tier
+              console.error(`Price tier update failed silently (no data returned). Tier ID: ${tier.id}, Product ID: ${id}`); // Roo Debug Log
+              throw new Error(`Product Prices table update returned no data (Tier ID: ${tier.id}, Product ID: ${id}). Check RLS/permissions.`);
+            }
           } else {
             const { error } = await supabase.from('product_prices').insert({
               product_id:id, tier_name:tier.tier_name, price:tier.price, original_price:tier.original_price, currency:tier.currency

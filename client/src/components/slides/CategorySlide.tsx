@@ -40,23 +40,52 @@ const CategorySlide: React.FC<CategorySlideProps> = ({ category }) => {
   const [products, setProducts] = useState<Product[]>([]);
   
   useEffect(() => {
-    const fetchProducts = async () => {
+    // 4. Define fetchCategoryProducts function
+    const fetchCategoryProducts = async () => {
       const { data, error } = await supabase
         .from('products')
         .select('*, product_prices(*), category:categories(*)')
         .eq('category_id', category.id)
         .eq('active', true)
         .limit(4); // Limit to 4 products for the grid
-      
+
       if (!error && data) {
         setProducts(data);
       } else if (error) {
         console.error(`Error fetching products for category ${category.id}:`, error);
       }
     };
-    
-    fetchProducts();
-  }, [category.id]);
+
+    // Call the function immediately
+    fetchCategoryProducts();
+
+    // 5. Add real-time subscription
+    const channel = supabase
+      .channel(`category-products-${category.id}`) // Unique channel name
+      .on(
+        'postgres_changes',
+        {
+          event: 'UPDATE', // Listen for UPDATE events
+          schema: 'public',
+          table: 'products',
+          filter: `category_id=eq.${category.id}` // Filter by category ID
+        },
+        (payload) => {
+          // 6. Subscription callback
+          console.log('Product update received for category:', category.name, payload);
+          // Refetch products to get the latest data
+          fetchCategoryProducts();
+        }
+      )
+      .subscribe();
+
+    // 7. Cleanup function
+    return () => {
+      console.log('Removing channel subscription for category:', category.name);
+      supabase.removeChannel(channel);
+    };
+
+  }, [category.id, category.name]); // Add category.name to dependency array for logging
   
   return (
     // Animate the overall slide container

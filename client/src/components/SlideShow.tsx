@@ -70,37 +70,72 @@ const SlideShow: React.FC = () => {
         ]);
 
         // Check mount status after promises resolve
-        if (!isMounted.current) return;
+        if (!isMounted.current) {
+          console.log("Component unmounted after fetch, aborting state update.");
+          return;
+        }
+        
+        console.log("Raw Settings:", settingsResult);
+        console.log("Raw Products:", productsResult);
+        console.log("Raw Categories:", categoriesResult);
+        console.log("Raw Announcements:", announcementsResult);
 
         // Process Settings
+        console.log("Processing settings...");
         setSettings(settingsResult);
         setTransitionDuration(settingsResult.transition_duration);
+        console.log("Settings processed.");
 
         // Check for data fetching errors
-        if (productsResult.error) throw productsResult.error;
-        if (categoriesResult.error) throw categoriesResult.error;
-        if (announcementsResult.error) throw announcementsResult.error;
+        if (productsResult.error) {
+          console.error("Product fetch error:", productsResult.error);
+          throw productsResult.error;
+        }
+        if (categoriesResult.error) {
+           console.error("Category fetch error:", categoriesResult.error);
+           throw categoriesResult.error;
+        }
+        if (announcementsResult.error) {
+           console.error("Announcement fetch error:", announcementsResult.error);
+           throw announcementsResult.error;
+        }
 
+        console.log("Processing fetched data...");
         const products = productsResult.data || [];
         const categories = categoriesResult.data || [];
         const announcements = announcementsResult.data || [];
+        console.log(`Found ${products.length} products, ${categories.length} categories, ${announcements.length} announcements.`);
 
         // Create and sort slides
+        console.log("Creating slides...");
         const productSlides: Slide[] = products.map(p => ({ id: `product-${p.id}`, type: 'product', data: p, priority: p.special ? 2 : 1 }));
         const categorySlides: Slide[] = categories.map(c => ({ id: `category-${c.id}`, type: 'category', data: c, priority: 0 }));
         const announcementSlides: Slide[] = announcements.map(a => ({ id: `announcement-${a.id}`, type: 'announcement', data: a, priority: 3 }));
+        
+        console.log(`Created ${productSlides.length} product slides, ${categorySlides.length} category slides, ${announcementSlides.length} announcement slides.`);
+        
         const allSlides = [...productSlides, ...categorySlides, ...announcementSlides];
+        console.log(`Total slides before sort: ${allSlides.length}`);
         allSlides.sort((a, b) => (b.priority || 0) - (a.priority || 0));
+        console.log(`Total slides after sort: ${allSlides.length}`);
 
         setSlides(allSlides);
+        console.log("Slides state updated.");
         setIsLoading(false); // Set loading to false after data is processed
+        console.log("isLoading set to false.");
 
       } catch (error) {
-        console.error("Error fetching slides/settings:", error);
-        if (isMounted.current) setIsLoading(false); // Ensure loading stops on error
+        console.error("Error during fetchDataAndSettings try block:", error);
+        if (isMounted.current) {
+          setIsLoading(false); // Ensure loading stops on error
+          console.log("isLoading set to false in catch block.");
+        }
       } finally {
-        if (isMounted.current) setIsFetching(false);
-        console.log("Finished fetching slides and settings.");
+        if (isMounted.current) {
+          setIsFetching(false);
+          console.log("isFetching set to false in finally block.");
+        }
+        console.log("fetchDataAndSettings finally block executed.");
       }
     };
 
@@ -274,6 +309,7 @@ const SlideShow: React.FC = () => {
     <div className="signage-layout">
       <InfoBar />
       <main className="signage-main-content">
+        {/* Restored slide animation */}
         <AnimatePresence initial={false} custom={direction} mode="wait">
           <motion.div
             key={page}
@@ -290,6 +326,7 @@ const SlideShow: React.FC = () => {
             {renderSlide(slides[page])}
           </motion.div>
         </AnimatePresence>
+        {/* Removed test content */}
       </main>
       <footer className="footer">
         <div className="footer-content">
